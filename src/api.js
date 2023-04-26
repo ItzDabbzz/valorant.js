@@ -33,8 +33,8 @@ class API {
     this.user_id = null;
     this.access_token = null;
     this.entitlements_token = null;
-    this.user_agent = "RiotClient/58.0.0.4640299.4552318 rso-auth (Windows;10;;Professional, x64)";
-    this.client_version = "release-05.06-shipping-6-765767";
+    this.user_agent = "RiotClient/63.0.5.4887690.4789131 rso-auth (Windows; 10;;Professional, x64)";
+    this.client_version = "release-06.01-shipping-8-820493";
     this.client_platform = {
       platformType: "PC",
       platformOS: "Windows",
@@ -61,9 +61,7 @@ class API {
       Authorization: `Bearer ${this.access_token}`,
       "X-Riot-Entitlements-JWT": this.entitlements_token,
       "X-Riot-ClientVersion": this.client_version,
-      "X-Riot-ClientPlatform": Buffer.from(
-        JSON.stringify(this.client_platform)
-      ).toString("base64"),
+      "X-Riot-ClientPlatform": Buffer.from(JSON.stringify(this.client_platform)).toString("base64"),
     };
 
     // merge in extra headers
@@ -88,6 +86,14 @@ class API {
         {
           headers: {
             "User-Agent": this.user_agent,
+            Connection: "keep-alive",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en,es-ES;q=0.9,es-419;q=0.8,es;q=0.7,bs;q=0.6",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Dest": "empty",
+            "sec-ch-ua-platform": "Windows",
+            "sec-ch-ua-mobile": "?0",
           },
           httpsAgent: agent,
         }
@@ -140,24 +146,18 @@ class API {
   }
 
   getConfig(region = this.region) {
-    return axios.get(
-      this.getSharedDataServiceUrl(region) + "/v1/config/" + region
-    );
+    return axios.get(this.getSharedDataServiceUrl(region) + "/v1/config/" + region);
   }
 
   getContent() {
-    return axios.get(
-      this.getSharedDataServiceUrl(this.region) + "/content-service/v2/content",
-      {
-        headers: this.generateRequestHeaders(),
-      }
-    );
+    return axios.get(this.getSharedDataServiceUrl(this.region) + "/content-service/v2/content", {
+      headers: this.generateRequestHeaders(),
+    });
   }
 
   getEntitlements(playerId) {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        `/store/v1/entitlements/${playerId}`,
+      this.getPlayerDataServiceUrl(this.region) + `/store/v1/entitlements/${playerId}`,
       {
         headers: this.generateRequestHeaders(),
       }
@@ -166,8 +166,7 @@ class API {
 
   getMatch(matchId) {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        `/match-details/v1/matches/${matchId}`,
+      this.getPlayerDataServiceUrl(this.region) + `/match-details/v1/matches/${matchId}`,
       {
         headers: this.generateRequestHeaders(),
       }
@@ -175,21 +174,15 @@ class API {
   }
 
   getParty(partyId) {
-    return axios.get(
-      this.getPartyServiceUrl(this.region) + `/parties/v1/parties/${partyId}`,
-      {
-        headers: this.generateRequestHeaders(),
-      }
-    );
+    return axios.get(this.getPartyServiceUrl(this.region) + `/parties/v1/parties/${partyId}`, {
+      headers: this.generateRequestHeaders(),
+    });
   }
 
   getPartyByPlayer(playerId) {
-    return axios.get(
-      this.getPartyServiceUrl(this.region) + `/parties/v1/players/${playerId}`,
-      {
-        headers: this.generateRequestHeaders(),
-      }
-    );
+    return axios.get(this.getPartyServiceUrl(this.region) + `/parties/v1/players/${playerId}`, {
+      headers: this.generateRequestHeaders(),
+    });
   }
 
   getCompetitiveLeaderboard(seasonId, startIndex = 0, size = 510) {
@@ -213,12 +206,9 @@ class API {
   }
 
   getPlayerMMR(playerId) {
-    return axios.get(
-      this.getPlayerDataServiceUrl(this.region) + `/mmr/v1/players/${playerId}`,
-      {
-        headers: this.generateRequestHeaders(),
-      }
-    );
+    return axios.get(this.getPlayerDataServiceUrl(this.region) + `/mmr/v1/players/${playerId}`, {
+      headers: this.generateRequestHeaders(),
+    });
   }
 
   getPlayerMatchHistory(playerId, startIndex = 0, endIndex = 10) {
@@ -243,8 +233,7 @@ class API {
 
   getPlayerAccountXp(playerId) {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        `/account-xp/v1/players/${playerId}`,
+      this.getPlayerDataServiceUrl(this.region) + `/account-xp/v1/players/${playerId}`,
       {
         headers: this.generateRequestHeaders(),
       }
@@ -252,19 +241,14 @@ class API {
   }
 
   getPlayerWallet(playerId) {
-    return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        `/store/v1/wallet/${playerId}`,
-      {
-        headers: this.generateRequestHeaders(),
-      }
-    );
+    return axios.get(this.getPlayerDataServiceUrl(this.region) + `/store/v1/wallet/${playerId}`, {
+      headers: this.generateRequestHeaders(),
+    });
   }
 
   getPlayerStoreFront(playerId) {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        `/store/v2/storefront/${playerId}`,
+      this.getPlayerDataServiceUrl(this.region) + `/store/v2/storefront/${playerId}`,
       {
         headers: this.generateRequestHeaders(),
       }
@@ -282,18 +266,14 @@ class API {
   }
 
   getSession(playerId) {
-    return axios.get(
-      this.getPartyServiceUrl(this.region) + `/session/v1/sessions/${playerId}`,
-      {
-        headers: this.generateRequestHeaders(),
-      }
-    );
+    return axios.get(this.getPartyServiceUrl(this.region) + `/session/v1/sessions/${playerId}`, {
+      headers: this.generateRequestHeaders(),
+    });
   }
 
   getContractDefinitions() {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        "/contract-definitions/v2/definitions",
+      this.getPlayerDataServiceUrl(this.region) + "/contract-definitions/v2/definitions",
       {
         headers: this.generateRequestHeaders(),
       }
@@ -302,8 +282,7 @@ class API {
 
   getStoryContractDefinitions() {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        "/contract-definitions/v2/definitions/story",
+      this.getPlayerDataServiceUrl(this.region) + "/contract-definitions/v2/definitions/story",
       {
         headers: this.generateRequestHeaders(),
       }
@@ -311,18 +290,14 @@ class API {
   }
 
   getStoreOffers() {
-    return axios.get(
-      this.getPlayerDataServiceUrl(this.region) + `/store/v1/offers`,
-      {
-        headers: this.generateRequestHeaders(),
-      }
-    );
+    return axios.get(this.getPlayerDataServiceUrl(this.region) + `/store/v1/offers`, {
+      headers: this.generateRequestHeaders(),
+    });
   }
 
   getContract(playerId) {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        `/contracts/v1/contracts/${playerId}`,
+      this.getPlayerDataServiceUrl(this.region) + `/contracts/v1/contracts/${playerId}`,
       {
         headers: this.generateRequestHeaders(),
       }
@@ -331,8 +306,7 @@ class API {
 
   getItemUpgradesV2() {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        `/contract-definitions/v2/item-upgrades`,
+      this.getPlayerDataServiceUrl(this.region) + `/contract-definitions/v2/item-upgrades`,
       {
         headers: this.generateRequestHeaders(),
       }
@@ -341,8 +315,7 @@ class API {
 
   getItemUpgradesV3() {
     return axios.get(
-      this.getPlayerDataServiceUrl(this.region) +
-        `/contract-definitions/v3/item-upgrades`,
+      this.getPlayerDataServiceUrl(this.region) + `/contract-definitions/v3/item-upgrades`,
       {
         headers: this.generateRequestHeaders(),
       }
